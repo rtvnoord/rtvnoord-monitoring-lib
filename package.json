@@ -1,0 +1,60 @@
+{
+  "name": "@rtvnoord/monitoring",
+  "version": "0.1.0",
+  "description": "Centrale monitoring-helpers voor RTV Noord-tools: tool-status + maintenance-mode + error-logger naar toolbox.rtvnoord.nl/admin.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./middleware": {
+      "types": "./dist/middleware.d.ts",
+      "default": "./dist/middleware.js"
+    },
+    "./instrumentation": {
+      "types": "./dist/instrumentation.d.ts",
+      "default": "./dist/instrumentation.js"
+    },
+    "./errors-route": {
+      "types": "./dist/errors-route.d.ts",
+      "default": "./dist/errors-route.js"
+    },
+    "./ErrorReporterClient": {
+      "types": "./dist/ErrorReporterClient.d.ts",
+      "default": "./dist/ErrorReporterClient.js"
+    },
+    "./GlobalError": {
+      "types": "./dist/GlobalError.d.ts",
+      "default": "./dist/GlobalError.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "tsc -p tsconfig.build.json || true"
+  },
+  "peerDependencies": {
+    "next": "^14.0.0 || ^15.0.0",
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@types/react": "^18.0.0",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "typescript": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rtvnoord/rtvnoord-monitoring-lib"
+  },
+  "license": "UNLICENSED",
+  "private": false
+}
