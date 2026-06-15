@@ -1,5 +1,6 @@
 node_modules
 .next
-dist
+# dist/ wordt wel gecommit zodat github: installs out-of-the-box
+# werken — niet iedere consumer/CI runt prepare-scripts.
 .DS_Store
 *.log
