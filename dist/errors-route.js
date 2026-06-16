@@ -1,3 +1,4 @@
+"use strict";
 // Client-side proxy voor de error-logger. Gebruik in elke tool:
 //
 //   // app/api/errors/route.ts
@@ -8,9 +9,11 @@
 // toolbox.rtvnoord.nl/api/errors. Het secret blijft op de server.
 //
 // Public route — middleware MOET 'm doorlaten via isPublicPath.
-import { NextResponse } from 'next/server';
-import { reportErrorServer } from './error-reporter';
-export async function POST(req) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.POST = POST;
+const server_1 = require("next/server");
+const error_reporter_1 = require("./error-reporter");
+async function POST(req) {
     let body = {};
     try {
         body = await req.json();
@@ -18,9 +21,9 @@ export async function POST(req) {
     catch { /* lege body OK */ }
     const message = typeof body.message === 'string' ? body.message : '';
     if (!message) {
-        return NextResponse.json({ ok: false, error: 'message required' }, { status: 400 });
+        return server_1.NextResponse.json({ ok: false, error: 'message required' }, { status: 400 });
     }
-    await reportErrorServer({ message, stack: body.stack ?? null }, {
+    await (0, error_reporter_1.reportErrorServer)({ message, stack: body.stack ?? null }, {
         message,
         stack: typeof body.stack === 'string' ? body.stack : null,
         level: body.level,
@@ -29,5 +32,5 @@ export async function POST(req) {
         release: body.release ?? null,
         context: body.context && typeof body.context === 'object' ? body.context : {},
     });
-    return NextResponse.json({ ok: true });
+    return server_1.NextResponse.json({ ok: true });
 }

@@ -1,8 +1,12 @@
+"use strict";
 // Middleware-helpers voor de tool-status integratie + maintenance-mode.
 // Tools roepen `withMonitoring(req, res)` aan vanuit hun eigen middleware,
 // na hun eigen auth-check. Levert security headers, doet de tool-status
 // ping (gecached), en redirect naar /maintenance als admin dat aanzet.
-import { NextResponse } from 'next/server';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.monitoringMatcher = void 0;
+exports.withMonitoring = withMonitoring;
+const server_1 = require("next/server");
 const MAINTENANCE_TTL_MS = 15_000;
 let maintenanceCache = null;
 function applySecurityHeaders(res) {
@@ -30,7 +34,7 @@ function shouldSkipPing(pathname, extra) {
  * Verwacht in env:
  *   TOOL_SLUG, BEHEER_API_URL (optioneel), BEHEER_API_SECRET
  */
-export async function withMonitoring(req, res = NextResponse.next(), options = {}) {
+async function withMonitoring(req, res = server_1.NextResponse.next(), options = {}) {
     const { pathname } = req.nextUrl;
     if (!options.skipSecurityHeaders)
         applySecurityHeaders(res);
@@ -51,7 +55,7 @@ export async function withMonitoring(req, res = NextResponse.next(), options = {
         const url = req.nextUrl.clone();
         url.pathname = '/maintenance';
         url.searchParams.set('message', cached.message);
-        return NextResponse.redirect(url);
+        return server_1.NextResponse.redirect(url);
     }
     try {
         const r = await fetch(`${beheerUrl}/api/tool-status`, {
@@ -79,7 +83,7 @@ export async function withMonitoring(req, res = NextResponse.next(), options = {
                 const url = req.nextUrl.clone();
                 url.pathname = '/maintenance';
                 url.searchParams.set('message', data.maintenanceMessage ?? '');
-                return NextResponse.redirect(url);
+                return server_1.NextResponse.redirect(url);
             }
         }
     }
@@ -89,6 +93,6 @@ export async function withMonitoring(req, res = NextResponse.next(), options = {
     return res;
 }
 /** Standaard matcher die alle paths matcht behalve statische assets. */
-export const monitoringMatcher = {
+exports.monitoringMatcher = {
     matcher: ['/((?!_next/static|_next/image|favicon.ico|logos/).*)'],
 };

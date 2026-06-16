@@ -1,8 +1,7 @@
 {
   "name": "@rtvnoord/monitoring",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Centrale monitoring-helpers voor RTV Noord-tools: tool-status + maintenance-mode + error-logger naar toolbox.rtvnoord.nl/admin.",
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

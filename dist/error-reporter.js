@@ -1,8 +1,13 @@
+"use strict";
 // Centrale error-reporter — wordt gebruikt door zowel server- als
 // client-side. Server: posten direct naar toolbox.rtvnoord.nl/api/errors
 // met x-beheer-secret. Client: posten naar /api/errors op de eigen origin
 // (een proxy via createErrorsProxyRoute) zodat het secret nooit in de
 // browser komt.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reportErrorServer = reportErrorServer;
+exports.withErrorReporter = withErrorReporter;
+exports.reportErrorClient = reportErrorClient;
 const DEDUP_WINDOW_MS = 60_000;
 const seen = new Map();
 function makeFingerprintLocal(message, stack) {
@@ -55,7 +60,7 @@ function pickStack(error) {
     return null;
 }
 // ─── Server-side ────────────────────────────────────────────
-export async function reportErrorServer(error, partial) {
+async function reportErrorServer(error, partial) {
     const message = partial?.message || pickMessage(error);
     const stack = partial?.stack ?? pickStack(error);
     if (!isFresh(makeFingerprintLocal(message, stack)))
@@ -93,7 +98,7 @@ export async function reportErrorServer(error, partial) {
 // ─── Route-handler wrapper (Next.js 14) ─────────────────────
 // In Next.js 14 bestaat onRequestError nog niet, dus wrap je route handlers
 // expliciet. In 15+ kan deze wrapper weg.
-export function withErrorReporter(handler) {
+function withErrorReporter(handler) {
     return async (...args) => {
         try {
             return await handler(...args);
@@ -110,7 +115,7 @@ export function withErrorReporter(handler) {
     };
 }
 // ─── Client-side ────────────────────────────────────────────
-export async function reportErrorClient(error, partial) {
+async function reportErrorClient(error, partial) {
     const message = partial?.message || pickMessage(error);
     const stack = partial?.stack ?? pickStack(error);
     if (!isFresh(makeFingerprintLocal(message, stack)))
