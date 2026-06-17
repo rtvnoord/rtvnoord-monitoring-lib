@@ -1,6 +1,6 @@
 {
   "name": "@rtvnoord/monitoring",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Centrale monitoring-helpers voor RTV Noord-tools: tool-status + maintenance-mode + error-logger naar toolbox.rtvnoord.nl/admin.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,6 +28,10 @@
     "./GlobalError": {
       "types": "./dist/GlobalError.d.ts",
       "default": "./dist/GlobalError.js"
+    },
+    "./FeedbackButton": {
+      "types": "./dist/FeedbackButton.d.ts",
+      "default": "./dist/FeedbackButton.js"
     }
   },
   "files": [
